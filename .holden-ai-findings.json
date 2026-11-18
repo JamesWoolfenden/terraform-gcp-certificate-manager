@@ -1,53 +1,53 @@
 {
-  "scan_date": "2026-11-18T00:00:00Z",
-  "scan_path": ".",
   "category": "all",
   "findings": [
     {
-      "id": "HOLDEN_AI_001",
-      "status": "fixed",
-      "first_seen": "2026-11-18",
-      "last_seen": "2026-11-18",
-      "unresolved_since": null,
-      "suppression_reason": null,
-      "principle": "reliability",
-      "severity": "MEDIUM",
       "confidence": "high",
-      "title": "create_before_destroy certificate has a static name, so any change to var.domains fails on replacement",
+      "explanation": "managed.domains forces replacement and the certificate is create_before_destroy, but its name is the fixed var.name. Adding or removing a domain makes Terraform create the new certificate under the same name while the old one still exists, so the apply fails with an already-exists error and the certificate can never be changed without manual surgery. Principle is a best fit (apply-time correctness).",
       "file": "google_certificate_manager_certificate.main.tf",
+      "first_seen": "2026-11-18",
+      "fixable": false,
+      "id": "HOLDEN_AI_001",
+      "last_seen": "2026-11-18",
       "line": 1,
-      "resource": "google_certificate_manager_certificate.main",
+      "principle": "reliability",
       "related_resources": [
         "google_certificate_manager_certificate_map_entry.main",
         "variable.domains"
       ],
-      "explanation": "managed.domains forces replacement and the certificate is create_before_destroy, but its name is the fixed var.name. Adding or removing a domain makes Terraform create the new certificate under the same name while the old one still exists, so the apply fails with an already-exists error and the certificate can never be changed without manual surgery. Principle is a best fit (apply-time correctness).",
       "remediation": "Derive the certificate name from var.name plus a short hash of var.domains, so each domain set gets a distinct name and create_before_destroy can swap the map entries over.",
-      "fixable": false
+      "resource": "google_certificate_manager_certificate.main",
+      "severity": "MEDIUM",
+      "status": "fixed",
+      "suppression_reason": null,
+      "title": "create_before_destroy certificate has a static name, so any change to var.domains fails on replacement",
+      "unresolved_since": null
     },
     {
-      "id": "HOLDEN_AI_002",
-      "status": "fixed",
-      "first_seen": "2026-11-18",
-      "last_seen": "2026-11-18",
-      "unresolved_since": null,
-      "suppression_reason": null,
-      "principle": "reliability",
-      "severity": "LOW",
       "confidence": "high",
-      "title": "Per-domain DNS authorization and map entry names can exceed the 63-character resource name limit",
+      "explanation": "Names are \"<name>-<domain with dots as hyphens>\"; var.name allows 32 characters and var.domains allows any FQDN length, so a moderately long hostname plans cleanly and is rejected by the API at apply. Principle is a best fit (apply-time correctness).",
       "file": "google_certificate_manager_dns_authorization.main.tf",
+      "first_seen": "2026-11-18",
+      "fixable": false,
+      "id": "HOLDEN_AI_002",
+      "last_seen": "2026-11-18",
       "line": 1,
-      "resource": "google_certificate_manager_dns_authorization.main",
+      "principle": "reliability",
       "related_resources": [
         "google_certificate_manager_certificate_map_entry.main",
         "variable.domains"
       ],
-      "explanation": "Names are \"<name>-<domain with dots as hyphens>\"; var.name allows 32 characters and var.domains allows any FQDN length, so a moderately long hostname plans cleanly and is rejected by the API at apply. Principle is a best fit (apply-time correctness).",
       "remediation": "Truncate names over 63 characters to 54 and append an 8-character hash of the domain to keep them unique.",
-      "fixable": false
+      "resource": "google_certificate_manager_dns_authorization.main",
+      "severity": "LOW",
+      "status": "fixed",
+      "suppression_reason": null,
+      "title": "Per-domain DNS authorization and map entry names can exceed the 63-character resource name limit",
+      "unresolved_since": null
     }
   ],
+  "scan_date": "2026-11-18T00:00:00Z",
+  "scan_path": ".",
   "suggested_policies": [],
   "suggested_suppressions": []
 }

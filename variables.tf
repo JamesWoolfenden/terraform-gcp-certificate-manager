@@ -1,6 +1,6 @@
 variable "name" {
   type        = string
-  description = "Name of the certificate; also the prefix for the DNS authorizations, map and map entries"
+  description = "Name prefix for the certificate (suffixed with a hash of var.domains so a domain change can replace it in place), the DNS authorizations, map and map entries"
 
   validation {
     condition     = can(regex("^[a-z]([-a-z0-9]{0,30}[a-z0-9])?$", var.name))

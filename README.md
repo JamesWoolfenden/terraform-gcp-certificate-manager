@@ -56,7 +56,7 @@ No modules.
 | <a name="input_dns_ttl"></a> [dns\_ttl](#input\_dns\_ttl) | TTL in seconds for the DNS authorization CNAME records | `number` | `300` | no |
 | <a name="input_domains"></a> [domains](#input\_domains) | Domains on the certificate, e.g. ["example.com", "*.example.com"]. Each gets a certificate map entry; each base domain gets a DNS authorization | `list(string)` | n/a | yes |
 | <a name="input_labels"></a> [labels](#input\_labels) | Labels applied to the certificate, DNS authorizations, map and map entries, for cost allocation and ownership tracking | `map(string)` | `{}` | no |
-| <a name="input_name"></a> [name](#input\_name) | Name of the certificate; also the prefix for the DNS authorizations, map and map entries | `string` | n/a | yes |
+| <a name="input_name"></a> [name](#input\_name) | Name prefix for the certificate (suffixed with a hash of var.domains so a domain change can replace it in place), the DNS authorizations, map and map entries | `string` | n/a | yes |
 
 ## Outputs
 

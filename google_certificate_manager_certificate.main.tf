@@ -1,5 +1,5 @@
 resource "google_certificate_manager_certificate" "main" {
-  name        = var.name
+  name        = local.certificate_name
   description = "Google-managed certificate for ${join(", ", var.domains)}"
   location    = "global"
   scope       = "DEFAULT"
